@@ -16,6 +16,7 @@ services:
     environment:
       - MEDIA_HOST=${MEDIA_HOST}
       - WEB_HOST=${WEB_HOST}
+      - STORAGE_HOST=${STORAGE_HOST}
     ports:
       - "80:80"
       - "443:443"
