@@ -97,11 +97,11 @@ services:
       - type: bind
         source: ./cloudflare.ini
         target: /etc/cloudflare/cloudflare.ini
-        read_only: true
     restart: always
     environment:
       - WEB_HOST=${WEB_HOST}
       - MEDIA_HOST=${MEDIA_HOST}
+      - CERTBOT_EMAIL=${CERTBOT_EMAIL}
     networks:
       - external_network
       
