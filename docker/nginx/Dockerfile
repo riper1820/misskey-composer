@@ -1,4 +1,4 @@
-FROM nginx:1.27.4-alpine3.21
+FROM nginx:1.27.4-bookworm
 
 RUN apt update && apt install -y inotify-tools
 
