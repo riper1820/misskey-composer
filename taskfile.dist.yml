@@ -1,0 +1,9 @@
+version: "3"
+
+includes:
+  cdk:
+    taskfile: cdk/taskfile.dist.yml
+    dir: cdk
+
+dotenv:
+  - .env
