@@ -5,6 +5,8 @@ services:
   nginx:
     build:
       context: docker/nginx
+      args:
+        - BASE_IMAGE_TAG=${IMAGE_TAG_NGINX}
     restart: always
     depends_on:
       web:
@@ -30,7 +32,7 @@ services:
         target: /etc/letsencrypt
 
   web:
-    image: misskey/misskey:2025.2.0
+    image: misskey/misskey:${IMAGE_TAG_MISSKEY}
     restart: always
     depends_on:
       db:
@@ -56,7 +58,7 @@ services:
 
   redis:
     restart: always
-    image: redis:7.4.2-alpine3.21
+    image: redis:${IMAGE_TAG_REDIS}
     networks:
       - internal_network
     volumes:
@@ -91,6 +93,8 @@ services:
   certbot:
     build:
       context: docker/certbot
+      args:
+        - BASE_IMAGE_TAG=${IMAGE_TAG_CERTBOT}
     volumes:
       - type: volume
         source: letsencrypt
