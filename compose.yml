@@ -1,0 +1,120 @@
+# baesd on:
+# https://github.com/misskey-dev/misskey/blob/develop/compose_example.yml
+
+services:
+  nginx:
+    build:
+      context: docker/nginx
+      args:
+        - BASE_IMAGE_TAG=${IMAGE_TAG_NGINX}
+    restart: always
+    depends_on:
+      web:
+        condition: service_healthy
+      certbot:
+        condition: service_started
+    networks:
+      - external_network
+    environment:
+      - MEDIA_HOST=${MEDIA_HOST}
+      - WEB_HOST=${WEB_HOST}
+      - STORAGE_HOST=${STORAGE_HOST}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - type: bind
+        source: ./nginx.conf.template
+        target: /etc/nginx/templates/nginx.conf.template
+        read_only: true
+      - type: volume
+        source: letsencrypt
+        target: /etc/letsencrypt
+
+  web:
+    image: misskey/misskey:${IMAGE_TAG_MISSKEY}
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    networks:
+      - internal_network
+      - external_network
+    environment:
+      - DATABASE_PASSWORD=${POSTGRES_PASSWORD}
+      - DATABASE_USER=${POSTGRES_USER}
+      - DATABASE_DB=${POSTGRES_DB}
+      - DATABASE_URL="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}"
+      - MISSKEY_URL=https://${WEB_HOST}/
+    volumes:
+      - type: bind
+        source: ./misskeyConfig.yml
+        target: /misskey/.config/default.yml
+        read_only: true
+
+  redis:
+    restart: always
+    image: redis:${IMAGE_TAG_REDIS}
+    networks:
+      - internal_network
+    volumes:
+      - type: volume
+        source: redis
+        target: /data
+    healthcheck:
+      test: "redis-cli ping"
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  db:
+    restart: always
+    image: postgres:17.4-alpine3.21
+    networks:
+      - internal_network
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - type: volume
+        source: db
+        target: /var/lib/postgresql/data
+    healthcheck:
+      test: "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  certbot:
+    build:
+      context: docker/certbot
+      args:
+        - BASE_IMAGE_TAG=${IMAGE_TAG_CERTBOT}
+    volumes:
+      - type: volume
+        source: letsencrypt
+        target: /etc/letsencrypt
+      - type: bind
+        source: ./cloudflare.ini
+        target: /etc/cloudflare/cloudflare.ini
+    restart: always
+    environment:
+      - WEB_HOST=${WEB_HOST}
+      - MEDIA_HOST=${MEDIA_HOST}
+      - CERTBOT_EMAIL=${CERTBOT_EMAIL}
+    networks:
+      - external_network
+      
+volumes:
+  db:
+  redis:
+  letsencrypt:
+
+networks:
+  internal_network:
+  external_network:
