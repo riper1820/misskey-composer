@@ -17,14 +17,6 @@ export class PublicS3 extends Construct {
       publicReadAccess: true,
       blockPublicAccess: new BlockPublicAccess({ restrictPublicBuckets: false , blockPublicPolicy: false}),
     })
-    // const bucketPolicy = new BucketPolicy(this, "BucketPolicy", {
-    //   bucket: this.bucket,
-    // });
-    // bucketPolicy.document.addStatements(new PolicyStatement({
-    //   actions: ["s3:GetObject"],
-    //   resources: [`${this.bucket.bucketArn}/*`],
-    //   principals: [new AnyPrincipal()],
-    // }))
 
     this.user = new User(this, "BucketUser")
     this.bucket.grantReadWrite(this.user)
