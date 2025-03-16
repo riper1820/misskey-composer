@@ -94,6 +94,24 @@ SMTP認証情報が出てくるで保存してください。後でMisskeyに保
 
 CDKによってS3バケットへのアクセス権を持つIAMユーザーが作成されるので、AWSのWeb UIからアクセスキーを発行してください。後でMisskeyに保存します。
 
+### Cloudflare R2の準備 (任意)
+
+オブジェクトストレージとしてCloudflare R2を使用する場合の設定
+
+#### バケットを準備
+
+Cloudflareのダッシュボードで "R2 Object Storage" を選択、バケットを作成する
+
+#### カスタムドメインの設定
+
+バケットの設定画面からバケットのカスタムドメインを設定する。 `r2.example.com` とした場合、環境変数`STORAGE_HOST`に`r2.example.com` を設定
+
+#### APIトークンの設定
+
+"R2 Object Storage" を選択し、 `API` ボタンからAPIトークンを弱行する。「オブジェクト読み取りと書き込み」の権限が必要
+
+発行されたトークンはMisskeyのオブジェクトストレージ設定で使用する。
+
 ### Docker Composeを起動
 
 `docker-compose up -d`
