@@ -115,3 +115,9 @@ Cloudflareのダッシュボードで "R2 Object Storage" を選択、バケッ�
 ### Docker Composeを起動
 
 `docker-compose up -d`
+
+## チューニング
+
+### postgresql.conf
+
+省メモリ環境に最適化した設定になっています。適宜調整してください
