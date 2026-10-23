@@ -73,7 +73,7 @@ services:
 
   db:
     restart: always
-    image: postgres:17.4-alpine3.21
+    image: postgres:${IMAGE_TAG_POSTGRES}
     networks:
       - internal_network
     command: postgres -c config_file=/etc/postgresql/postgresql.conf
