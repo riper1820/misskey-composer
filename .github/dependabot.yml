@@ -1,0 +1,18 @@
+version: 2
+updates:
+  - package-ecosystem: "docker-compose"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    ignore:
+      - dependency-name: "library/postgres"
+        update-types:
+          - "version-update:semver-major"
+  - package-ecosystem: "docker"
+    directory: "/docker/certbot"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "docker"
+    directory: "/docker/nginx"
+    schedule:
+      interval: "weekly"
