@@ -93,3 +93,14 @@ Cloudflareのダッシュボードで "R2 Object Storage" を選択、バケッ�
 ### postgresql.conf
 
 省メモリ環境に最適化した設定になっています。適宜調整してください
+
+## アプデ
+
+misskey / postgresの手動マイグレーション手順がある場合は別途実施しておくこと
+
+### イメージ更新 & 再起動
+
+```
+docker compose down
+docker compose up -d
+```
