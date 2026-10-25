@@ -1,6 +1,6 @@
 # Misskey Composer
 
-Misskeyの(ほぼ)全てを[Docker Compose](https://docs.docker.com/compose/)で構築するやつ + [AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/home.html) によるリソース定義
+Misskeyの(ほぼ)全てを[Docker Compose](https://docs.docker.com/compose/)で構築するやつ
 
 ## 要件
 
@@ -11,7 +11,6 @@ Misskeyの(ほぼ)全てを[Docker Compose](https://docs.docker.com/compose/)で
 
 ### その他
 - [Cloudflare](https://www.cloudflare.com/ja-jp/)のアカウント
-- AWSのアカウント
 - 独自ドメイン
 
 ## 手順
@@ -66,33 +65,6 @@ CloudFlareの [APIトークン](https://dash.cloudflare.com/profile/api-tokens) 
 ```
 dns_cloudflare_api_token=your_api_token
 ```
-
-
-### AWSリソースの準備 （任意）
-
-#### cdk bootstrap
-
-`task cdk:bootstrap` を実行
-（AWS CLIに複数のアカウントでログインしている場合は、 `.env` で`AWS_PROFILE`を指定）
-
-#### cdk deploy
-
-`task cdk:deploy` を実行
-
-#### Amazon SESのサンドボックスを解除
-
-Amazon SESの画面に移動し、ドメインの認証と本稼働アクセスのリクエストを行ってください。
-
-#### SMTP設定
-
-Amazon SESの画面 「SMTP設定」からSMTP認証情報を作成してください。
-
-SMTP認証情報が出てくるで保存してください。後でMisskeyに保存します。
-
-
-#### S3へのアクセスキーを入手
-
-CDKによってS3バケットへのアクセス権を持つIAMユーザーが作成されるので、AWSのWeb UIからアクセスキーを発行してください。後でMisskeyに保存します。
 
 ### Cloudflare R2の準備 (任意)
 
