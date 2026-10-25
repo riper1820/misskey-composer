@@ -1,5 +1,4 @@
-ARG BASE_IMAGE_TAG=1.27.4-bookworm
-FROM nginx:${BASE_IMAGE_TAG}
+FROM nginx:1.30.6-trixie
 
 RUN apt update && apt install -y inotify-tools
 
