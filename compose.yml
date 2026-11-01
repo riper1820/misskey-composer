@@ -56,7 +56,7 @@ services:
 
   redis:
     restart: always
-    image: redis:8.10.2-trixie
+    image: redis:8.10.3-trixie
     networks:
       - internal_network
     volumes:
