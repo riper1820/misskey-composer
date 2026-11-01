@@ -30,7 +30,7 @@ services:
         target: /etc/letsencrypt
 
   web:
-    image: misskey/misskey:2026.10.0
+    image: misskey/misskey:2026.10.1
     restart: always
     depends_on:
       db:
