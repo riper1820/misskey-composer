@@ -1,4 +1,4 @@
-FROM nginx:1.30.6-trixie
+FROM nginx:1.31.0-trixie
 
 RUN apt update && apt install -y inotify-tools
 
