@@ -104,6 +104,7 @@ server {
         proxy_hide_header etag;
 
         resolver 8.8.8.8 valid=100s;
+        proxy_ssl_server_name on;
         proxy_pass https://${STORAGE_HOST}$request_uri;
 
         expires max;
