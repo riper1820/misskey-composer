@@ -30,7 +30,7 @@ services:
         target: /etc/letsencrypt
 
   web:
-    image: misskey/misskey:2026.10.0
+    image: misskey/misskey:2026.10.1
     restart: always
     depends_on:
       db:
@@ -56,7 +56,7 @@ services:
 
   redis:
     restart: always
-    image: redis:8.10.2-trixie
+    image: redis:8.10.3-trixie
     networks:
       - internal_network
     volumes:

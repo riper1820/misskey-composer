@@ -1,0 +1,26 @@
+version: '3'
+
+tasks:
+  backup:
+    desc: Back up the Misskey PostgreSQL database
+    vars:
+      BACKUP_DIR: '{{.BACKUP_DIR | default .HOME}}'
+      TIMESTAMP:
+        sh: date +%Y%m%d-%H%M%S
+    cmds:
+      - mkdir -p "{{.BACKUP_DIR}}"
+      - docker compose exec -T db sh -c 'pg_dump -U "$POSTGRES_USER" -d "$POSTGRES_DB" -Fc' > "{{.BACKUP_DIR}}/misskey-{{.TIMESTAMP}}.dump"
+
+  restore:
+    desc: Restore a PostgreSQL custom-format dump into the Misskey database
+    cmds:
+      - |
+        if [ -z "${DUMP_FILE:-}" ]; then
+          echo "Usage: DUMP_FILE=<dump-file> task restore" >&2
+          exit 1
+        fi
+        if [ ! -r "$DUMP_FILE" ]; then
+          echo "Dump file is not readable: $DUMP_FILE" >&2
+          exit 1
+        fi
+        docker compose exec -T db sh -c 'pg_restore -U "$POSTGRES_USER" -d "$POSTGRES_DB" --clean --if-exists --single-transaction --no-owner --no-privileges --exit-on-error -' < "$DUMP_FILE"

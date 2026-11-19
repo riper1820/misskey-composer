@@ -5,7 +5,7 @@ updates:
     schedule:
       interval: "weekly"
     ignore:
-      - dependency-name: "library/postgres"
+      - dependency-name: "postgres"
         update-types:
           - "version-update:semver-major"
   - package-ecosystem: "docker"
